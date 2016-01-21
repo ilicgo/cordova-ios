@@ -24,7 +24,7 @@ Update these notes using: git log --pretty=format:'* %s' --topo-order --no-merge
 
 Cordova is a static library that enables developers to include the Cordova API in their iOS application projects easily, and also create new Cordova-based iOS application projects through the command-line.
 
-### 4.0.1.1 (Jan 21, 2016)
+### 4.0.1a (Jan 21, 2016)
 * Allow all iframe to be loaded without restriction
 * Link click from an iframe is now open with the external browser. BUG (IOS-8)
 
