@@ -78,7 +78,7 @@
 - (BOOL)shouldOverrideLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType
 {
     NSURL* url = [request URL];
-    
+
     switch (navigationType) {
         case UIWebViewNavigationTypeLinkClicked:
             // Note that the rejection strings will *only* print if
@@ -89,6 +89,12 @@
                 return NO;
             }
             // fall through, to check whether you can load this in the webview
+            case UIWebViewNavigationTypeOther: //allow iframe navigation
+              return YES;
+            case -1:
+              //allow iframe navigation enum WKNavigationType.WKNavigationTypeOther
+              //UIWebViewNavigationType and WKNavigationType.WKNavigationTypeOther are not consistent
+              return YES;
         default:
             // check whether we can internally navigate to this url
             return ([self.allowNavigationsWhitelist URLIsAllowed:url]);

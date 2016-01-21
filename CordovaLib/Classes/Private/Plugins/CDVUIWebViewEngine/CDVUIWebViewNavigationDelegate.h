@@ -20,7 +20,9 @@
 #import <UIKit/UIKit.h>
 #import "CDVUIWebViewEngine.h"
 
-@interface CDVUIWebViewNavigationDelegate : NSObject <UIWebViewDelegate>
+@interface CDVUIWebViewNavigationDelegate : NSObject <UIWebViewDelegate> {
+    NSString *mainDocUrl;
+}
 
 @property (nonatomic, weak) CDVPlugin* enginePlugin;
 

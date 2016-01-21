@@ -55,7 +55,8 @@
 {
     NSLog(@"Finished load of: %@", theWebView.request.URL);
     CDVViewController* vc = (CDVViewController*)self.enginePlugin.viewController;
-
+    mainDocUrl = theWebView.request.URL.absoluteString;
+    
     // It's safe to release the lock even if this is just a sub-frame that's finished loading.
     [CDVUserAgentUtil releaseLock:vc.userAgentLockToken];
 
@@ -92,7 +93,7 @@
     if ([url isFileURL]) {
         return YES;
     }
-    
+
     return NO;
 }
 
@@ -100,6 +101,14 @@
 {
     NSURL* url = [request URL];
     CDVViewController* vc = (CDVViewController*)self.enginePlugin.viewController;
+
+    if(mainDocUrl != nil){
+
+        if(![mainDocUrl isEqualToString:[[request mainDocumentURL] absoluteString]]){
+            [[UIApplication sharedApplication] openURL:url];
+            return NO;
+        }
+    }
 
     /*
      * Execute any commands queued with cordova.exec() on the JS side.
@@ -118,7 +127,7 @@
      */
     BOOL anyPluginsResponded = NO;
     BOOL shouldAllowRequest = NO;
-    
+
     for (NSString* pluginName in vc.pluginObjects) {
         CDVPlugin* plugin = [vc.pluginObjects objectForKey:pluginName];
         SEL selector = NSSelectorFromString(@"shouldOverrideLoadWithRequest:navigationType:");
@@ -130,7 +139,7 @@
             }
         }
     }
-    
+
     if (anyPluginsResponded) {
         return shouldAllowRequest;
     }
@@ -144,7 +153,7 @@
     } else {
         [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:CDVPluginHandleOpenURLNotification object:url]];
     }
-    
+
     return NO;
 }
 
